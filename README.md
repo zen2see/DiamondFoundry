@@ -1,3 +1,4 @@
+## About
 ## DiamondFoundry
 This is the base contract for my Foundry Diamond contracts.
 ## Foundry
@@ -9,4 +10,10 @@ Foundry consists of:
 -   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 ## Documentation
 https://book.getfoundry.sh/
+
+## Getting started
+
+## Requirements
+
+## Quickstart
 
