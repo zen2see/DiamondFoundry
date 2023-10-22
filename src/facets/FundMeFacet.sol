@@ -5,6 +5,7 @@ import {AppStorage, Modifiers} from "../libraries/LibAppStorage.sol";
 import {LibMeta} from "../../../shared/libraries/LibMeta.sol";
 import {LibConstants} from "../libraries/LibConstants.sol";
 import {LibPriceConverter} from "../libraries/LibPriceConverter.sol";
+
 error not_Owner();
 
 contract FundMeFacet is Modifiers {
@@ -30,12 +31,14 @@ contract FundMeFacet is Modifiers {
         require(callSuccess, "Call failed"); 
     }
 
-    fallback() external payable {
-        this.fund();
-    }
+    // function supportsInterface(bytes4 _interfaceID) external view returns (bool) {}
 
-    receive() external payable {
-        this.fund();
-    }
+    // fallback() external payable {
+    //     this.fund();
+    // }
 
+    // receive() external payable {
+    //     this.fund();
+    // }
+    
 }

@@ -66,19 +66,19 @@ abstract contract StateDeployDiamond is HelperContract {
         FacetCut[] memory cut = new FacetCut[](2);
 
         cut[0] = (
-        FacetCut({
-        facetAddress: address(dLoupe),
-        action: FacetCutAction.Add,
-        functionSelectors: generateSelectors("DiamondLoupeFacet")
-        })
+            FacetCut({
+                facetAddress: address(dLoupe),
+                action: FacetCutAction.Add,
+                functionSelectors: generateSelectors("DiamondLoupeFacet")
+            })
         );
 
         cut[1] = (
-        FacetCut({
-        facetAddress: address(ownerF),
-        action: FacetCutAction.Add,
-        functionSelectors: generateSelectors("OwnershipFacet")
-        })
+            FacetCut({
+                facetAddress: address(ownerF),
+                action: FacetCutAction.Add,
+                functionSelectors: generateSelectors("OwnershipFacet")
+            })
         );
 
         // initialise interfaces
@@ -120,14 +120,12 @@ abstract contract StateAddFacet1 is StateDeployDiamond{
 
         // add functions to diamond
         ICut.diamondCut(facetCut, address(0x0), "");
-
     }
 
 }
 
 
 abstract contract StateAddFacet2 is StateAddFacet1{
-
     Test2Facet test2Facet;
 
     function setUp() public virtual override {
@@ -142,37 +140,31 @@ abstract contract StateAddFacet2 is StateAddFacet1{
         FacetCut[] memory facetCut = new FacetCut[](1);
         facetCut[0] =
         FacetCut({
-        facetAddress: address(test2Facet),
-        action: FacetCutAction.Add,
-        functionSelectors: fromGenSelectors
+            facetAddress: address(test2Facet),
+            action: FacetCutAction.Add,
+            functionSelectors: fromGenSelectors
         });
 
         // add functions to diamond
         ICut.diamondCut(facetCut, address(0x0), "");
-
     }
-
 }
 
 
 abstract contract StateCacheBug is StateDeployDiamond {
-
     Test1Facet test1Facet;
-
-    bytes4 ownerSel = hex'8da5cb5b';
+    bytes4 ownerSel = hex'8da5cb5b'; // owner()
     bytes4[] selectors;
-
     function setUp() public virtual override {
         super.setUp();
         test1Facet = new Test1Facet();
-
-        selectors.push(hex'19e3b533');
-        selectors.push(hex'0716c2ae');
-        selectors.push(hex'11046047');
-        selectors.push(hex'cf3bbe18');
-        selectors.push(hex'24c1d5a7');
-        selectors.push(hex'cbb835f6');
-        selectors.push(hex'cbb835f7');
+        selectors.push(hex'19e3b533'); // test1Func1()
+        selectors.push(hex'0716c2ae'); // test1Func2()
+        selectors.push(hex'11046047'); // test1Func3()
+        selectors.push(hex'cf3bbe18'); // test1Func4()
+        selectors.push(hex'24c1d5a7'); // test1Func5()
+        selectors.push(hex'cbb835f6'); // test1Func6()
+        selectors.push(hex'cbb835f7'); // error 
         selectors.push(hex'cbb835f8');
         selectors.push(hex'cbb835f9');
         selectors.push(hex'cbb835fa');
@@ -201,9 +193,9 @@ abstract contract StateCacheBug is StateDeployDiamond {
         newSelectors[2] = selectors[10];
 
         cut[0] = FacetCut({
-        facetAddress: address(0x0),
-        action: FacetCutAction.Remove,
-        functionSelectors: newSelectors
+            facetAddress: address(0x0),
+            action: FacetCutAction.Remove,
+            functionSelectors: newSelectors
         });
 
         ICut.diamondCut(cut, address(0x0), "");

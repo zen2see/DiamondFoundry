@@ -12,6 +12,7 @@ import "../lib/solidity-stringutils/strings.sol";
 import "../../shared/interfaces/IDiamond.sol";
 import "../../shared/interfaces/IDiamondLoupe.sol";
 import "../lib/forge-std/src/Test.sol";
+import {console} from "forge-std/console.sol";
 
 
 abstract contract HelperContract is IDiamond, IDiamondLoupe, Test{
@@ -40,9 +41,10 @@ abstract contract HelperContract is IDiamond, IDiamondLoupe, Test{
         while (s.contains(trace) ) {
             s.split(nl);
         }
-
+        console.log("Helper Contract: in generateSelectors");
+        console.log("Helper Contract: this is");
         strings.slice memory colon = ":".toSlice();
-        strings.slice memory comma = ",".toSlice();
+        strings.slice memory comma = ",".toSlice(); // ERROR SAYS IT IS UNUSED
         strings.slice memory dbquote = '"'.toSlice();
         selectors = new bytes4[]((s.count(colon)));
 
@@ -51,7 +53,7 @@ abstract contract HelperContract is IDiamond, IDiamondLoupe, Test{
             // split at colon, extract string up to next doublequote for methodname
             strings.slice memory method = s.split(colon).until(dbquote);
             selectors[i] = bytes4(method.keccak());
-            strings.slice memory selectr = s.split(comma).until(dbquote);     // advance s to the next comma
+            strings.slice memory selectr = s.split(comma).until(dbquote); // advance s to the next comma ERROR SAYS IT IS UNUSED
         }
         return selectors;
     }
