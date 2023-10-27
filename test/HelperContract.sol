@@ -14,7 +14,7 @@ import "../../shared/interfaces/IDiamondLoupe.sol";
 import "../lib/forge-std/src/Test.sol";
 import {console} from "forge-std/console.sol";
 
-
+ 
 abstract contract HelperContract is IDiamond, IDiamondLoupe, Test{
     using strings for *;
 
@@ -41,13 +41,20 @@ abstract contract HelperContract is IDiamond, IDiamondLoupe, Test{
         while (s.contains(trace) ) {
             s.split(nl);
         }
-        console.log("Helper Contract: in generateSelectors");
-        console.log("Helper Contract: this is");
+        // CONSOLE LOG CMD
+        console.log("HELPERCONTRACT: in generateSelectors()");
+        console.log("CMD:");
+        console.logString(st);
         strings.slice memory colon = ":".toSlice();
         strings.slice memory comma = ",".toSlice(); // ERROR SAYS IT IS UNUSED
         strings.slice memory dbquote = '"'.toSlice();
         selectors = new bytes4[]((s.count(colon)));
-
+         // CONSOLE LOG CMD
+        console.log("HELPERCONTRACT: in generateSelectors()");
+        console.log("FIRST THREE SELECTORS");
+        // console.logBytes4(selectors[0]);
+        // console.logBytes4(selectors[1]);
+        // console.logBytes4(selectors[2]);
         for(uint i = 0; i < selectors.length; i++) {
             s.split(dbquote);   // advance to next doublequote
             // split at colon, extract string up to next doublequote for methodname
@@ -130,6 +137,11 @@ abstract contract HelperContract is IDiamond, IDiamondLoupe, Test{
             for (uint j = 0; j < facetList[i].functionSelectors.length; j++) {
                 selectors[pos] = facetList[i].functionSelectors[j];
                 pos += 1;
+                // CONSOLE LOG FACET[i] and SELECTOR[j]
+                console.log("HELPERCONTRACT: in getAllSelectors()");
+                console.log("%o", "facetList[i]");
+                console.log("Selector[j]:");
+                //console.logBytes4(selectors[j]);
             }
         }
         return selectors;

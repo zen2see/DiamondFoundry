@@ -39,16 +39,16 @@ abstract contract StateFundDeployDiamond is HelperContract {
         facetNames = ["DiamondCutFacet", "DiamondLoupeFacet", "OwnershipFacet"];
         // diamod arguments
         DiamondArgs memory _args = DiamondArgs({
-        owner: address(this),
-        init: address(0),
-        initCalldata: " "
+            owner: address(this),
+            init: address(0),
+            initCalldata: " "
         });
         // FacetCut with CutFacet for initialisation
         FacetCut[] memory cut0 = new FacetCut[](1);
         cut0[0] = FacetCut ({
-        facetAddress: address(dCutFacet),
-        action: IDiamond.FacetCutAction.Add,
-        functionSelectors: generateSelectors("DiamondCutFacet")
+            facetAddress: address(dCutFacet),
+            action: IDiamond.FacetCutAction.Add,
+            functionSelectors: generateSelectors("DiamondCutFacet")
         });
         // deploy diamond
         diamond = new Diamond(cut0, _args);
@@ -88,8 +88,13 @@ abstract contract StateFundAddFacet1 is StateFundDeployDiamond{
         //deploy FundMeFacet
         fundMeFacet = new FundMeFacet();
         // get functions selectors but remove first element (supportsInterface)
-        bytes4[] memory fromGenSelectors  = removeElement(uint(0), generateSelectors("FundMeFacet"));
+        // bytes4[] memory fromGenSelectors = removeElement(uint(0), generateSelectors("FundMeFacet"));
+        bytes4[] memory fromGenSelectors = generateSelectors("FundMeFacet");
         // array of functions to add
+        // CONSOLE LOG STATEFUNDADDFACET1
+        console.log("TESTSTATES2.SOL FundMeTest.t.sol");
+        console.log("fromGenSelectors[0]:");
+        console.logBytes4(fromGenSelectors[0]);   
         FacetCut[] memory facetCut = new FacetCut[](1);
         facetCut[0] =
         FacetCut({
@@ -116,15 +121,20 @@ abstract contract StateCacheBug is StateFundDeployDiamond {
 
         FacetCut[] memory cut = new FacetCut[](1);
         bytes4[] memory selectorsAdd = new bytes4[](3);
-
+        
+        console.log("StateCacheBug selectorsAdd[0]:");
+        // console.logBytes4(selectorsAdd[0]);
+        // console.logBytes4(selectorsAdd[1]);
+        // console.logBytes4(selectorsAdd[2]);
+        
         for(uint i = 0; i < selectorsAdd.length; i++){
             selectorsAdd[i] = selectors[i];
         }
 
         cut[0] = FacetCut({
-        facetAddress: address(fundMeFacet),
-        action: FacetCutAction.Add,
-        functionSelectors: selectorsAdd
+            facetAddress: address(fundMeFacet),
+            action: FacetCutAction.Add,
+            functionSelectors: selectorsAdd
         });
 
         // add test1Facet to diamond
